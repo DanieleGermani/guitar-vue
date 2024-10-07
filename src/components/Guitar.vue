@@ -17,7 +17,6 @@ defineEmits(["add-to-cart"]);
       />
     </div>
     <div class="col-8">
-      <p>{{ guitarNumber }}</p>
       <h3 class="text-black fs-4 fw-bold text-uppercase">
         {{ guitar.name }}
       </h3>

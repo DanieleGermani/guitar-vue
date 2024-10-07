@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, watch } from "vue";
 import { db } from "./data/guitar";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
@@ -9,19 +9,34 @@ const guitars = ref([]);
 const cart = ref([]);
 const guitar = ref({});
 
+watch(
+  cart,
+  () => {
+    saveInLocalStorege();
+  },
+  { deep: true }
+);
+
 onMounted(() => {
   guitar.value = db[3];
   guitars.value = db;
-  console.log("Componente montado");
+  const cartLocalStorage = localStorage.getItem("cart");
+  if (cartLocalStorage) {
+    cart.value = JSON.parse(cartLocalStorage);
+  }
 });
+
+const saveInLocalStorege = () => {
+  localStorage.setItem("cart", JSON.stringify(cart.value));
+};
 const addToCart = (guitar) => {
   const guitarIndex = cart.value.findIndex((item) => item.id === guitar.id);
   if (guitarIndex >= 0) {
     cart.value[guitarIndex].quantity++;
-    return;
+  } else {
+    guitar.quantity = 1;
+    cart.value.push(guitar);
   }
-  guitar.quantity = 1;
-  cart.value.push(guitar);
 };
 
 const increaseQuantity = (guitar) => {
