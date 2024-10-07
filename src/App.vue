@@ -29,16 +29,19 @@ const increaseQuantity = (guitar) => {
 };
 
 const decreaseQuantity = (guitar) => {
-  if (guitar.quantity >= 1) return;
+  if (guitar.quantity <= 1) return;
   guitar.quantity--;
 };
 
 const removeGuitarFromCart = (guitar) => {
-  debugger;
   const index = cart.value.findIndex((item) => item.id === guitar.id);
   if (index >= 0) {
     cart.value.splice(index, 1);
   }
+};
+
+const removeAllItem = () => {
+  cart.value = [];
 };
 </script>
 
@@ -50,6 +53,7 @@ const removeGuitarFromCart = (guitar) => {
     @decrease-quantity="decreaseQuantity"
     @remove-from-cart="removeGuitarFromCart"
     @add-to-cart="addToCart"
+    @remove-all-items="removeAllItem"
   />
   <main class="container-xl mt-5">
     <h2 class="text-center">Nuestra Colección</h2>

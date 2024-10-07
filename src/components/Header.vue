@@ -1,5 +1,5 @@
 <script setup>
-import Guitar from "./Guitar.vue";
+import { computed } from "vue";
 
 const props = defineProps({
   cart: {
@@ -16,7 +16,15 @@ defineEmits([
   "decrease-quantity",
   "remove-from-cart",
   "add-to-cart",
+  "remove-all-items",
 ]);
+
+const totalCartPrice = computed(() => {
+  return props.cart.reduce(
+    (total, item) => total + item.quantity * item.price,
+    0
+  );
+});
 </script>
 <template>
   <header class="py-5 header">
@@ -94,9 +102,13 @@ defineEmits([
                 </table>
 
                 <p class="text-end">
-                  Total pagar: <span class="fw-bold">$899</span>
+                  Total pagar:
+                  <span class="fw-bold">${{ totalCartPrice }}</span>
                 </p>
-                <button class="btn btn-dark w-100 mt-3 p-2">
+                <button
+                  @click="$emit('remove-all-items')"
+                  class="btn btn-dark w-100 mt-3 p-2"
+                >
                   Vaciar Carrito
                 </button>
               </div>
